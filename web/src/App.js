@@ -24,6 +24,7 @@ import EditRedemption from './pages/Redemption/EditRedemption';
 import TopUp from './pages/TopUp';
 import Log from './pages/Log';
 import Chat from './pages/Chat';
+import Product from "./pages/Product";
 
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
@@ -143,6 +144,16 @@ function App() {
           </Suspense>
         }
       />
+        <Route
+            path='/product'
+            element={
+                <PrivateRoute>
+                    <Suspense fallback={<Loading></Loading>}>
+                        <Product />
+                    </Suspense>
+                </PrivateRoute>
+            }
+        />
       <Route
         path='/redemption'
         element={
