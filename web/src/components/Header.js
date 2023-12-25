@@ -32,7 +32,7 @@ let headerButtons = [
   },
   {
     name: '购买',
-    to: '/buy',
+    to: '/product',
     icon: 'cc amazon pay'
   },
   {
