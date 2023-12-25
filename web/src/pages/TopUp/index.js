@@ -4,6 +4,8 @@ import { API, showError, showInfo, showSuccess } from '../../helpers';
 import { renderQuota } from '../../helpers/render';
 
 const TopUp = () => {
+  const userId = localStorage.getItem('user_id');
+  console.log(userId);
   const [redemptionCode, setRedemptionCode] = useState('');
   const [topUpLink, setTopUpLink] = useState('');
   const [userQuota, setUserQuota] = useState(0);

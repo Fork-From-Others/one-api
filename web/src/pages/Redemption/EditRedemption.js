@@ -12,11 +12,12 @@ const EditRedemption = () => {
   const [loading, setLoading] = useState(isEdit);
   const originInputs = {
     name: '',
+    price: 0.5,
     quota: 100000,
     count: 1
   };
   const [inputs, setInputs] = useState(originInputs);
-  const { name, quota, count } = inputs;
+  const { name, price, quota, count } = inputs;
 
   const handleCancel = () => {
     navigate('/redemption');
@@ -47,6 +48,7 @@ const EditRedemption = () => {
     let localInputs = inputs;
     localInputs.count = parseInt(localInputs.count);
     localInputs.quota = parseInt(localInputs.quota);
+    localInputs.price = parseFloat(localInputs.price);
     let res;
     if (isEdit) {
       res = await API.put(`/api/redemption/`, { ...localInputs, id: parseInt(redemptionId) });
@@ -89,6 +91,17 @@ const EditRedemption = () => {
               value={name}
               autoComplete='new-password'
               required={!isEdit}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Form.Input
+                label='价格'
+                name='price'
+                placeholder={'请输入价格'}
+                onChange={handleInputChange}
+                value={price}
+                autoComplete='new-password'
+                type='number'
             />
           </Form.Field>
           <Form.Field>

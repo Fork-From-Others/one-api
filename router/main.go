@@ -6,11 +6,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"one-api/common"
+	"one-api/middleware"
 	"os"
 	"strings"
 )
 
 func SetRouter(router *gin.Engine, buildFS embed.FS, indexPage []byte) {
+	router.Use(middleware.CORS())
 	SetApiRouter(router)
 	SetDashboardRouter(router)
 	SetRelayRouter(router)

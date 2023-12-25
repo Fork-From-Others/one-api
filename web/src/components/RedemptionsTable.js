@@ -187,6 +187,14 @@ const RedemptionsTable = () => {
               状态
             </Table.HeaderCell>
             <Table.HeaderCell
+                style={{ cursor: 'pointer' }}
+                onClick={() => {
+                  sortRedemption('price');
+                }}
+            >
+              价格
+            </Table.HeaderCell>
+            <Table.HeaderCell
               style={{ cursor: 'pointer' }}
               onClick={() => {
                 sortRedemption('quota');
@@ -210,6 +218,14 @@ const RedemptionsTable = () => {
             >
               兑换时间
             </Table.HeaderCell>
+            <Table.HeaderCell
+                style={{ cursor: 'pointer' }}
+                onClick={() => {
+                  sortRedemption('redeemed_by');
+                }}
+            >
+              兑换者ID
+            </Table.HeaderCell>
             <Table.HeaderCell>操作</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
@@ -227,9 +243,11 @@ const RedemptionsTable = () => {
                   <Table.Cell>{redemption.id}</Table.Cell>
                   <Table.Cell>{redemption.name ? redemption.name : '无'}</Table.Cell>
                   <Table.Cell>{renderStatus(redemption.status)}</Table.Cell>
+                  <Table.Cell>{redemption.price ? '$' + redemption.price : '--'}</Table.Cell>
                   <Table.Cell>{renderQuota(redemption.quota)}</Table.Cell>
                   <Table.Cell>{renderTimestamp(redemption.created_time)}</Table.Cell>
                   <Table.Cell>{redemption.redeemed_time ? renderTimestamp(redemption.redeemed_time) : "尚未兑换"} </Table.Cell>
+                  <Table.Cell>{redemption.redeemed_by ? redemption.redeemed_by : '--'}</Table.Cell>
                   <Table.Cell>
                     <div>
                       <Button

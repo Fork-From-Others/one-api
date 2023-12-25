@@ -31,6 +31,11 @@ let headerButtons = [
     admin: true
   },
   {
+    name: '购买',
+    to: '/buy',
+    icon: 'cc amazon pay'
+  },
+  {
     name: '充值',
     to: '/topup',
     icon: 'cart'
