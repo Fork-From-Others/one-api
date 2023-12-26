@@ -15,6 +15,8 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/gorilla/websocket v1.5.0
 	github.com/pkoukk/tiktoken-go v0.1.5
+	github.com/smartwalle/alipay/v3 v3.2.20
+	github.com/smartwalle/xid v1.0.7
 	github.com/stretchr/testify v1.8.3
 	golang.org/x/crypto v0.14.0
 	golang.org/x/image v0.14.0
@@ -54,7 +56,6 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/smartwalle/alipay/v3 v3.2.20 // indirect
 	github.com/smartwalle/ncrypto v1.0.4 // indirect
 	github.com/smartwalle/ngx v1.0.9 // indirect
 	github.com/smartwalle/nsign v1.0.9 // indirect
