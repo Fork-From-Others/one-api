@@ -11,8 +11,8 @@ import (
 var client *alipay.Client
 
 const (
-	kAppId      = "9021000122689420"
-	kPrivateKey = "MIIEpAIBAAKCAQEAtrCYn039gp/IjLZsNl64QjHjPfAklyYZyIPSqlPNmColRMOAb2rbnLASRpP1VgT7YzA4JgJ1f/fhGsSBexpIi2BOZdwDexBtmfe9dFGzbWhpqAxzWnZazLde+BGOs6BGk0v1B0cWUqlv6wgSSo57Xu7xL56a34gDsBi1qoXnu4f1CzrvviRsNCgDDurNsAtkjLzoPuzHri6sThsQ7P3amb3zyG5xVxSGZRFKgPNoiiZpBpXPoEwMrHQRE8rmsmgdz+E4YL1xuD+ICQxCCTBOJwUuDzPt5wr793Pxgloqh0p3yPvOShmbMAxUtLiGgcZNqxy49ddG89egVyGxRJpimQIDAQABAoIBAEfGUfAkn/j19cDy2sjxpcq79t+avYV0vqR8xgONMTUbOdEuTgN4JBgHRObdsoG9K1bo1uZ4CNnh9Vqi4YwP43h+uc5jBisPZUAciR5uCuRtJTWUzq032qybToB/xWTlD1VHflkBoM+RKhtY7HbGS8ocbj2bPpWbxnck/hqkyUpvkFkO0/ngHr6V44pxEK7sm53abiey4jtAQwJcLgS3wLcbSbVGsfRI1srq1I1s54EKzZfJxqRynuMiaKDPGHrUHEcNCQcWS3k4cU1sZF5jMk17f97SzwC8Iz0Kfd7zzw8IiGmvX7sYHJL0mPwqAF+rSlVwZs+Fj/DDcFcBHvpSlBECgYEA+BzskUzgQng3KoMY3Ho6bCxm2At00+Jmfz/bLknj/KB8qie0ionuvOkSFSc1rqPtijVN4L5EJRS1y8LWMGxJTsxAnqJdlLynFx7zi3n/C3Aywwhtz2ijyQNFLgZtnbhVIZYDnf8GwLsWPJjbEeE1JoDAO4wNtT4DuV5mHAdWqY8CgYEAvH9GuQgc+7un90kAFY9nyvlkD/D2cRcfF0Z+FPoj3/k3GS6pXWfnrORgkiGwyqm1e83Tx8RPYMtkRgAGy2mW4ibj7jbOFJYQNBZiML7DAtYuwDDdILm1d4F3840/QHYdtXdWHIryKmdthjmA/Bt1u0MSMmhaGVfHFdYUF2mNjVcCgYEA6mDAZN3fN0tCqakf0h6wk8E6AbqIySOkuW5ECa0JbnrYaRCK7xgva0sspsjcYDZAzX9fKv/xdanjtjE+jo2sjoBKRtCQYFH58dBuNoKvGEoL2ctbmEN7/QZW0oyF/ijEWq7Qie8AnQ3eiq3GvFQnFlEnxtidlmmXsQNop++SwScCgYBQCHJMyccUkx7D/fjNLrBRHAaCRjs81SZcSY/q9DIbPMNKK+e5Qw6499aQ9UENK3Vk9YWAAjf5zyHqHsTDxTdNGloYoKhrUTPcCczzCWvfXnVHIPgilvcXoJ7/h+9dPUlr7Rlg0RX1LyjvnqbHZBlewyGMyYXH0N80xEqPjj+NzQKBgQCyhmWVWUiZNNMV5aWcHy8XFoXuvLIFWbA2WvPoPG+Xia+5BO2ytTI0VJKBY5ACaEofWsy5R2/L6cJhYeSTGe9z0K6Wg96NsxV4BSawp+jseV7oi1HdpTMB4dGph0DJUFMJZ1Lm0s7r5aZ5pkZ6+JYGry1EGmjmR+xaVHodd2LNpw=="
+	kAppId      = "2021004128689728"
+	kPrivateKey = "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCF4G2a6hPp86CfvpptYDpOihroJ3SXnhn1yEJXPAScsfN8zYFbOnfNjyoX6cqNnCJiihmYY2Y3+W/w+IRBNiaBDrCunvyHj9glXZK9R00SFsFuYYGoGHpOVYpc0HoKiehX7wZRXN7K+1GVv/7XK8NvY2U6pfWgoGdcGm3gDbIPF7La2xGxocbqb8mtUKtRbPwGZwHp+xJi9EJK0ZTUJE9Z+8KiUhudiiAnwzNdKLsa3pcvxW7sJeYDryC6A8w2vX/8Jh3yeBsw3RkstWxUJsZ7HOtYfDe7IfrS7LnrJ4gBMD3dmVkxSP32LPwiKPrQ+JaJCHnAUKF8UjsPH3bAOjtNAgMBAAECggEAYUjdXR2Mqw2nQ242uhSbSkeBlgJV73esVbbYvpuWnmeSELclsS2jsXS/mfECiDVVp1XDk8FnnnVcqzdspBa9lDsgmURfLgORhlWhNHqDvwlaNuQUXBqthg8TJK86gD4G4R+I78cU/1vxxWhnv+TFeEQ6Y4wGGlt1wLBT9+T754q7EzdCNlbTDHLtnLnI4APYnuZFZ3VHK4a9Ya/KxeG4Nzui0u6TUBgzMtnkr1o1C7YohcJo7SWX1zW1pqz6AeJQgaKt3QavOPAp+9ig5+Fox79ubxN5OrpcV0tJbTXAxlLBTIvx4p3WiHGfb/RBW+14xIzYB4xoGbCPLQeT2rKJ4QKBgQDJ6GN2GsVt0c9FygAOKSlap3Jw0WtjLoXIH2x45r97Ybh7PjCQ7s499+OsYUXuKaY/fawMW0aTPagnzBcs4nrGf+kiTIUd5o0DZl/hoVoqSQGQJiEe8gkmTTkA0A58u9ygCoJL+371Ld6utL2YPnPG5t6bvcJIqCc3QFFL05/EBwKBgQCpvjSUP6Tds5RginkM0+isqoS8BpJFoHe31ZM6V+Oy2hi8wWXtQPhULEbH/6IZf+57lSRbpQyJRrT7RWEdgfM9vjBBs9udnAXYYxxoVfw2JGM5k3KTOetAXcD22zLxZ13PdFM40svrl6ACgb2DxSPmHQmXB9JWY0e8kF70rz75CwKBgDcspwleNXdWL1L96Vf1TZS1T2OfBr56txpB5A2B2O+pe5VKIFFqwLdUZ0Xy6v4zKXgOKpbR1o5j+fCuJ+MfHLfjulyiFnpeR0iXkDoDMrV9b8zpboGbWH67+YjMUjkpyRd+565F0qLDXyfUwj65SkAfVNOwXkgmk1jY3Z5f/Te/AoGBAJu/F3VzVC3MSXevdtSLV7GeoD359ZqHW3HFONrOq/F+ZjZDaeegtnpdSfDWoQCuvr6MIRkpvu/yfbsUdMBjbTGY4aRXiEn8T+y1O+qMAugWySiaHwXxneaoX5bhl8OiqZPhUz8PQ+Z+cGX8b0yJxZ+tww/eMGPtonPlMAtpBOnzAoGBAJUNrlEiXycYhs91GdQEClwAWlMTseOX0Zc/ArgVJGrShAQ4ZJ7oA1RzQnB3LhsFL5pAYD1tz+SSa3rELAdJeMqR0VQVGW5gSqwI/yvHYg5SjuoVMrJBQXk2aAlTIWGn6eeT282Uz7flXzryDINwO0VOonMqr8HXAOksNuFKoLT/"
 	kServerPort = "9989"
 	// TODO 设置回调地址域名
 	kServerDomain = ""
@@ -21,13 +21,13 @@ const (
 func main() {
 	var err error
 
-	if client, err = alipay.New(kAppId, kPrivateKey, false); err != nil {
+	if client, err = alipay.New(kAppId, kPrivateKey, true); err != nil {
 		log.Println("初始化支付宝失败", err)
 		return
 	}
 
 	// 加载证书
-	if err = client.LoadAppCertPublicKeyFromFile("examples/alipay/appPublicCert.crt"); err != nil {
+	if err = client.LoadAppCertPublicKeyFromFile("examples/alipay/appCertPublicKey.crt"); err != nil {
 		log.Println("加载证书发生错误", err)
 		return
 	}
@@ -35,12 +35,12 @@ func main() {
 		log.Println("加载证书发生错误", err)
 		return
 	}
-	if err = client.LoadAlipayCertPublicKeyFromFile("examples/alipay/alipayPublicCert.crt"); err != nil {
+	if err = client.LoadAlipayCertPublicKeyFromFile("examples/alipay/alipayCertPublicKey_RSA2.crt"); err != nil {
 		log.Println("加载证书发生错误", err)
 		return
 	}
 
-	if err = client.SetEncryptKey("iotxR/d99T9Awom/UaSqiQ=="); err != nil {
+	if err = client.SetEncryptKey("9F7r76gjRfF7uW4+Jwxt5A=="); err != nil {
 		log.Println("加载内容加密密钥发生错误", err)
 		return
 	}
