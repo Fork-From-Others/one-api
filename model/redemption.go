@@ -71,6 +71,7 @@ func Redeem(key string, userId int) (quota int, err error) {
 		}
 		redemption.RedeemedTime = common.GetTimestamp()
 		redemption.Status = common.RedemptionCodeStatusUsed
+		redemption.RedeemedBy = userId
 		err = tx.Save(redemption).Error
 		return err
 	})
