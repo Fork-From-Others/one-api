@@ -36,6 +36,7 @@ const RedemptionsTable = () => {
 
   const loadRedemptions = async (startIdx) => {
     const res = await API.get(`/api/redemption/?p=${startIdx}`);
+    console.log('res: ', startIdx, res);
     const { success, message, data } = res.data;
     if (success) {
       if (startIdx === 0) {

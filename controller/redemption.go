@@ -29,6 +29,31 @@ func GetAllRedemptions(c *gin.Context) {
 	return
 }
 
+func PageQueryAndGroupBy(c *gin.Context) {
+	p, _ := strconv.Atoi(c.Query("p"))
+	limit, _ := strconv.Atoi(c.Query("limit"))
+	if p < 0 {
+		p = 0
+	}
+	if limit != 12 {
+		limit = 12
+	}
+	redemptions, err := model.PageQueryAndGroupBy(p*limit, limit, "quota")
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "",
+		"data":    redemptions,
+	})
+	return
+}
+
 func SearchRedemptions(c *gin.Context) {
 	keyword := c.Query("keyword")
 	redemptions, err := model.SearchRedemptions(keyword)
@@ -109,6 +134,7 @@ func AddRedemption(c *gin.Context) {
 		cleanRedemption := model.Redemption{
 			UserId:      c.GetInt("id"),
 			Name:        redemption.Name,
+			Price:       redemption.Price,
 			Key:         key,
 			CreatedTime: common.GetTimestamp(),
 			Quota:       redemption.Quota,

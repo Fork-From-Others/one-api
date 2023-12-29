@@ -28,6 +28,13 @@ func GetAllRedemptions(startIdx int, num int) ([]*Redemption, error) {
 	return redemptions, err
 }
 
+func PageQueryAndGroupBy(startIdx int, num int, groupBy string) ([]*Redemption, error) {
+	var redemptions []*Redemption
+	var err error
+	err = DB.Order("id desc").Limit(num).Offset(startIdx).Group(groupBy).Find(&redemptions).Error
+	return redemptions, err
+}
+
 func SearchRedemptions(keyword string) (redemptions []*Redemption, err error) {
 	err = DB.Where("id = ? or name LIKE ?", keyword, keyword+"%").Find(&redemptions).Error
 	return redemptions, err
