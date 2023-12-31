@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Grid, Header, Pagination, Segment, Table, TableBody, TableHeader} from 'semantic-ui-react';
+import {Button, Card, Grid, Header, Pagination, Segment, Table} from 'semantic-ui-react';
 import {API, showError} from "../../helpers";
-import {ITEMS_PER_PAGE, PRODUCT_PER_PAGE} from "../../constants";
-import {Link} from "react-router-dom";
+import {PRODUCT_PER_PAGE} from "../../constants";
 
 const Product = () => {
     const [products, setProducts] = useState([]);
@@ -62,7 +61,21 @@ const Product = () => {
                                                 <p>价格: {item.price}￥</p>
                                                 <p></p>
                                             </Card.Description>
-                                            <Button size={"mini"} positive fluid>下单</Button>
+                                            <Button size={"mini"} positive fluid onClick={
+                                                async () => {
+                                                    let res = await API.post("/api/alipay/getPaymentQrcode", {
+                                                        productId: item.id,
+                                                        subject: item.name,
+                                                        money: item.price
+                                                    });
+                                                    const {success, message, data} = res.data;
+                                                    if (success) {
+                                                        console.log('data: ', data);
+                                                    } else {
+                                                        showError(message);
+                                                    }
+                                                }
+                                            }>下单</Button>
                                         </Card.Content>
                                     </Card>
                                 </Grid.Column>
