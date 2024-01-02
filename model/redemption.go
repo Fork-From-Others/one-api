@@ -36,6 +36,15 @@ func PageQueryAndGroupBy(startIdx int, num int, groupBy string) ([]*Redemption, 
 	return redemptions, err
 }
 
+func UpdateTradeNoById(id int, tradeNo string) error {
+	if id == 0 {
+		return errors.New("id 为空！")
+	}
+	redemption := Redemption{Id: id}
+	err := DB.Model(&redemption).Update("trade_no", tradeNo).Error
+	return err
+}
+
 func SearchRedemptions(keyword string) (redemptions []*Redemption, err error) {
 	err = DB.Where("id = ? or name LIKE ?", keyword, keyword+"%").Find(&redemptions).Error
 	return redemptions, err

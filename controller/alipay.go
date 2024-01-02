@@ -122,29 +122,43 @@ func GetPaymentQrcode(c *gin.Context) {
 }
 
 func GetPaymentStatus(c *gin.Context) {
+	data := make(map[string]interface{})
+	outTradeNo := c.Query("out_trade_no")
 	productId, err := strconv.Atoi(c.Query("product_id"))
 	if err != nil {
+		data["status"] = "等待支付"
+		data["error"] = err.Error()
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
 			"message": err.Error(),
+			"data":    data,
 		})
 		return
 	}
+
 	redemption, err := model.GetRedemptionById(productId)
 	if err != nil {
+		data["status"] = "等待支付"
+		data["error"] = err.Error()
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
 			"message": err.Error(),
+			"data":    data,
 		})
 		return
 	}
-	outTradeNo := c.Query("out_trade_no")
+	data["product_id"] = redemption.Id
 
 	client, err := alipay.NewClient(AppId, PrivateKey, true)
 	if err != nil {
 		xlog.Error(err)
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "收款设置有误，请联系管理员",
+		})
 		return
 	}
+
 	//配置公共参数
 	client.SetCharset("utf-8").
 		SetSignType(alipay.RSA2)
@@ -160,21 +174,50 @@ func GetPaymentStatus(c *gin.Context) {
 	bm.Set("out_trade_no", outTradeNo)
 	bm.Set("total_amount", redemption.Price)
 	bm.Set("biz_content", bm.JsonBody())
+
 	//查询订单
 	aliRsp, err := client.TradeQuery(ctx, bm)
-	if err != nil {
+	if err != nil || aliRsp.Response.TradeStatus == "WAIT_BUYER_PAY" {
+		data["status"] = "等待支付"
 		xlog.Error("err:", err)
 		c.JSON(http.StatusOK, gin.H{
 			"success": true,
-			"data":    err.Error(),
+			"data":    data,
 		})
 		return
 	}
 
+	if redemption.TradeNo != "" && redemption.TradeNo != aliRsp.Response.TradeNo {
+		data["status"] = "请重新下单"
+		c.JSON(http.StatusOK, gin.H{
+			"success": true,
+			"message": "该产品已被购买，请重新下单",
+			"data":    data,
+		})
+		return
+	}
+
+	tradeNo := aliRsp.Response.TradeNo
+	err = model.UpdateTradeNoById(productId, tradeNo)
+	if err != nil {
+		xlog.Error("err:", err)
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "支付异常，请联系管理员",
+			"data":    err,
+		})
+		return
+	}
+
+	data["trade_no"] = tradeNo
+	data["product_id"] = productId
+	data["status"] = "支付成功"
+	data["key"] = redemption.Key
+
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
-		"message": "OK",
-		"data":    aliRsp,
+		"message": data["status"],
+		"data":    data,
 	})
 	return
 }

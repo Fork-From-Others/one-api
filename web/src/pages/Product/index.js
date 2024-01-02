@@ -9,8 +9,10 @@ const Product = () => {
     const [activePage, setActivePage] = useState(1);
 
     const [modalOpen, setModalOpen] = useState(false);
-    const [orderStatus, setOrderStatus] = useState('unpaid');
     const [qrcodeUrl, setQrcodeUrl] = useState(null);
+    const [productId, setProductId] = useState(null);
+    const [productKey, setProductKey] = useState(null);
+    const [orderStatus, setOrderStatus] = useState('等待支付');
 
     const loadRedemptions = async (startIdx) => {
         let res = await API.get(`/api/redemption/pageQueryAndGroupBy?p=${startIdx}`);
@@ -74,6 +76,7 @@ const Product = () => {
                                                     });
                                                     const {success, message, data} = res.data;
                                                     const {product_id, out_trade_no, qr_code_url, qr_code_base64} = data;
+                                                    setProductId(product_id);
                                                     if (success) {
                                                         console.log('data: ', data);
                                                         setQrcodeUrl(qr_code_base64);
@@ -81,8 +84,11 @@ const Product = () => {
                                                         // 开始定时查询订单状态
                                                         const intervalId = setInterval(async () => {
                                                             const res = await API.get(`/api/alipay/status?product_id=${product_id}&out_trade_no=${out_trade_no}`);
-                                                            if (res.data.status === 'paid') {
-                                                                setOrderStatus('paid');
+                                                            const {success, message, data} = res.data;
+                                                            console.log('data: ', data);
+                                                            if (data.status === '支付成功') {
+                                                                setOrderStatus('支付成功');
+                                                                setProductKey(data.key);
                                                                 clearInterval(intervalId);
                                                             }
                                                         }, 5000);
@@ -115,10 +121,10 @@ const Product = () => {
                 <Modal.Header>请扫描以下二维码进行支付</Modal.Header>
                 <Modal.Content>
                     <Image size='medium' src={qrcodeUrl} wrapped alt="支付二维码"/>
-                    <p>产品编号：{}</p>
-                    <p>订单编号：{}</p>
-                    <p>订单状态：{}</p>
-                    <p>兑换码：{}</p>
+                    <p>产品编号：{productId}</p>
+                    <p>订单状态：{orderStatus}</p>
+                    <p>兑换密钥：{productKey}</p>
+                    <p style={{color: 'red'}}>当兑换密钥出现后请自行保存，不会再次显示！</p>
                 </Modal.Content>
             </Modal>
         </>
