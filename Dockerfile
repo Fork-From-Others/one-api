@@ -1,7 +1,7 @@
 FROM node:16 as builder
 
 WORKDIR /build
-ADD web/package.json web/.npmrc ./
+ADD web/package.json ./
 RUN npm install
 COPY ./web .
 COPY ./VERSION .
@@ -15,9 +15,7 @@ ENV GO111MODULE=on \
 
 WORKDIR /build
 ADD go.mod go.sum ./
-RUN go env -w GO111MODULE=on \
-    && go env -w GOPROXY=https://goproxy.cn,direct \
-    && go mod download
+RUN go mod download
 COPY . .
 COPY --from=builder /build/build ./web/build
 RUN go build -ldflags "-s -w -X 'one-api/common.Version=$(cat VERSION)' -extldflags '-static'" -o one-api
