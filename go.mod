@@ -16,6 +16,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/gorilla/websocket v1.5.0
 	github.com/pkoukk/tiktoken-go v0.1.5
+	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/smartwalle/alipay/v3 v3.2.20
 	github.com/smartwalle/xid v1.0.7
 	github.com/stretchr/testify v1.8.3

@@ -20,7 +20,7 @@ var client *alipay.Client
 
 func main() {
 	var err error
-	if client, err = alipay.New(kAppId, kPrivateKey, false); err != nil {
+	if client, err = alipay.New(kAppId, kPrivateKey, true); err != nil {
 		log.Println("初始化支付宝失败", err)
 		return
 	}

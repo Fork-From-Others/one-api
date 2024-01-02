@@ -1,21 +1,14 @@
 package model
 
 type AlipayGetPaymentQrcodeReq struct {
-	Subject string `json:"subject"`
-	Money   int64  `json:"money"` // 分
+	ProductId int     `json:"product_id"`
+	Subject   string  `json:"subject"`
+	Money     float32 `json:"money"`
 }
 
 type AlipayGetPaymentQrcodeRsp struct {
-	OutTradeNo string `json:"out_trade_no"`
-	QrCode     string `json:"qr_code"`
-}
-
-type AlipayPagePayUrlReq struct {
-	Subject string `json:"subject"`
-	Money   int64  `json:"money"` // 分
-}
-
-type AlipayPagePayUrlRsp struct {
-	OutTradeNo string `json:"out_trade_no"`
-	PagePayUrl string `json:"page_pay_url"`
+	ProductId    int    `json:"product_id"`
+	OutTradeNo   string `json:"out_trade_no"`
+	QrCodeUrl    string `json:"qr_code_url"`
+	QrCodeBase64 string `json:"qr_code_base64"`
 }

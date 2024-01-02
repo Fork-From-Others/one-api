@@ -115,6 +115,7 @@ func SetApiRouter(router *gin.Engine) {
 		alipayRoute := apiRouter.Group("/alipay")
 		alipayRoute.Use(middleware.UserAuth())
 		{
+			alipayRoute.GET("/status", controller.GetPaymentStatus)
 			alipayRoute.POST("/getPaymentQrcode", controller.GetPaymentQrcode)
 		}
 	}

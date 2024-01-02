@@ -13,11 +13,12 @@ type Redemption struct {
 	Key          string  `json:"key" gorm:"type:char(32);uniqueIndex"`
 	Status       int     `json:"status" gorm:"default:1"`
 	Name         string  `json:"name" gorm:"index"`
-	Price        float32 `json:"price" gorm:"default:0.5"`
+	Price        float32 `json:"price" gorm:"default:0.50"`
 	Quota        int     `json:"quota" gorm:"default:100"`
 	CreatedTime  int64   `json:"created_time" gorm:"bigint"`
 	RedeemedTime int64   `json:"redeemed_time" gorm:"bigint"`
-	RedeemedBy   int     `json:"redeemed_by"`
+	RedeemedBy   int     `json:"redeemed_by" gorm:"default:0"`
+	TradeNo      string  `json:"trade_no" gorm:"type:char(32);default:NULL"`
 	Count        int     `json:"count" gorm:"-:all"` // only for api request
 }
 
@@ -31,7 +32,7 @@ func GetAllRedemptions(startIdx int, num int) ([]*Redemption, error) {
 func PageQueryAndGroupBy(startIdx int, num int, groupBy string) ([]*Redemption, error) {
 	var redemptions []*Redemption
 	var err error
-	err = DB.Order("id desc").Limit(num).Offset(startIdx).Group(groupBy).Find(&redemptions).Error
+	err = DB.Where("status = 1 and redeemed_time <= 0 and trade_no IS NULL").Order("id desc").Limit(num).Offset(startIdx).Group(groupBy).Find(&redemptions).Error
 	return redemptions, err
 }
 

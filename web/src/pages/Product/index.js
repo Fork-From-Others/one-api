@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Grid, Header, Pagination, Segment, Table} from 'semantic-ui-react';
+import {Button, Card, Grid, Header, Image, Modal, Pagination, Segment, Table} from 'semantic-ui-react';
 import {API, showError} from "../../helpers";
 import {PRODUCT_PER_PAGE} from "../../constants";
 
@@ -7,6 +7,10 @@ const Product = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activePage, setActivePage] = useState(1);
+
+    const [modalOpen, setModalOpen] = useState(false);
+    const [orderStatus, setOrderStatus] = useState('unpaid');
+    const [qrcodeUrl, setQrcodeUrl] = useState(null);
 
     const loadRedemptions = async (startIdx) => {
         let res = await API.get(`/api/redemption/pageQueryAndGroupBy?p=${startIdx}`);
@@ -64,13 +68,24 @@ const Product = () => {
                                             <Button size={"mini"} positive fluid onClick={
                                                 async () => {
                                                     let res = await API.post("/api/alipay/getPaymentQrcode", {
-                                                        productId: item.id,
+                                                        product_id: item.id,
                                                         subject: item.name,
                                                         money: item.price
                                                     });
                                                     const {success, message, data} = res.data;
+                                                    const {product_id, out_trade_no, qr_code_url, qr_code_base64} = data;
                                                     if (success) {
                                                         console.log('data: ', data);
+                                                        setQrcodeUrl(qr_code_base64);
+                                                        setModalOpen(true);
+                                                        // 开始定时查询订单状态
+                                                        const intervalId = setInterval(async () => {
+                                                            const res = await API.get(`/api/alipay/status?product_id=${product_id}&out_trade_no=${out_trade_no}`);
+                                                            if (res.data.status === 'paid') {
+                                                                setOrderStatus('paid');
+                                                                clearInterval(intervalId);
+                                                            }
+                                                        }, 5000);
                                                     } else {
                                                         showError(message);
                                                     }
@@ -95,6 +110,17 @@ const Product = () => {
                     </Table.Footer>
                 </Table>
             </Segment>
+
+            <Modal size={'mini'} open={modalOpen} onClose={() => setModalOpen(false)}>
+                <Modal.Header>请扫描以下二维码进行支付</Modal.Header>
+                <Modal.Content>
+                    <Image size='medium' src={qrcodeUrl} wrapped alt="支付二维码"/>
+                    <p>产品编号：{}</p>
+                    <p>订单编号：{}</p>
+                    <p>订单状态：{}</p>
+                    <p>兑换码：{}</p>
+                </Modal.Content>
+            </Modal>
         </>
     )
 };
