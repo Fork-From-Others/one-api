@@ -22,7 +22,10 @@ const OperationSetting = () => {
     DisplayInCurrencyEnabled: '',
     DisplayTokenStatEnabled: '',
     ApproximateTokenEnabled: '',
-    RetryTimes: 0
+    RetryTimes: 0,
+    AppId: '',
+    AppPrivateKey: '',
+    AlipayPublicKey: '',
   });
   const [originInputs, setOriginInputs] = useState({});
   let [loading, setLoading] = useState(false);
@@ -134,7 +137,6 @@ const OperationSetting = () => {
   };
 
   const deleteHistoryLogs = async () => {
-    console.log(inputs);
     const res = await API.delete(`/api/log/?target_timestamp=${Date.parse(historyTimestamp) / 1000}`);
     const { success, message, data } = res.data;
     if (success) {
@@ -216,6 +218,47 @@ const OperationSetting = () => {
             submitConfig('general').then();
           }}>保存通用设置</Form.Button>
           <Divider />
+          <Header as='h3'>
+            收款设置
+          </Header>
+          <Form.Group inline>
+            <Form.Checkbox
+                label='启用支付宝收款'
+            />
+          </Form.Group>
+          <Form.Group widths='equal'>
+                <Form.Input
+                    label='应用ID'
+                    name='AppId'
+                    onChange={handleInputChange}
+                    autoComplete='new-password'
+                    value={inputs.AppId}
+                    type='text'
+                    placeholder='应用ID'
+                />
+          </Form.Group>
+          <Form.Group widths='equal'>
+            <Form.TextArea
+                label='应用私钥'
+                name='AppPrivateKey'
+                onChange={handleInputChange}
+                autoComplete='new-password'
+                value={inputs.AppPrivateKey}
+                type='text'
+                placeholder='应用私钥'
+            />
+          </Form.Group>
+          <Form.Group widths='equal'>
+            <Form.TextArea
+                label='支付宝公钥'
+                name='AlipayPublicKey'
+                onChange={handleInputChange}
+                autoComplete='new-password'
+                value={inputs.AlipayPublicKey}
+                type='text'
+                placeholder='支付宝公钥'
+            />
+          </Form.Group>
           <Header as='h3'>
             日志设置
           </Header>

@@ -16,7 +16,6 @@ const Product = () => {
 
     const loadRedemptions = async (startIdx) => {
         let res = await API.get(`/api/product/pageQueryAndGroupBy?p=${startIdx}`);
-        console.log('res: ', startIdx, res);
         const {success, message, data} = res.data;
         if (success) {
             if (startIdx === 0) {
@@ -78,14 +77,12 @@ const Product = () => {
                                                     const {product_id, out_trade_no, qr_code_url, qr_code_base64} = data;
                                                     setProductId(product_id);
                                                     if (success) {
-                                                        console.log('data: ', data);
                                                         setQrcodeUrl(qr_code_base64);
                                                         setModalOpen(true);
                                                         // 开始定时查询订单状态
                                                         const intervalId = setInterval(async () => {
                                                             const res = await API.get(`/api/alipay/status?product_id=${product_id}&out_trade_no=${out_trade_no}`);
                                                             const {success, message, data} = res.data;
-                                                            console.log('data: ', data);
                                                             if (data.status === '支付成功') {
                                                                 setOrderStatus('支付成功');
                                                                 setProductKey(data.key);

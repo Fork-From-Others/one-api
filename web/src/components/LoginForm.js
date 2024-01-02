@@ -67,7 +67,6 @@ const LoginForm = () => {
       const { success, message, data } = res.data;
       if (success) {
         userDispatch({ type: 'login', payload: data });
-        console.log(JSON.stringify(data));
         localStorage.setItem('user', JSON.stringify(data));
         if (username === 'root' && password === '123456') {
           navigate('/user/edit');
