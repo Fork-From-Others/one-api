@@ -15,7 +15,7 @@ const Product = () => {
     const [orderStatus, setOrderStatus] = useState('等待支付');
 
     const loadRedemptions = async (startIdx) => {
-        let res = await API.get(`/api/redemption/pageQueryAndGroupBy?p=${startIdx}`);
+        let res = await API.get(`/api/product/pageQueryAndGroupBy?p=${startIdx}`);
         console.log('res: ', startIdx, res);
         const {success, message, data} = res.data;
         if (success) {
