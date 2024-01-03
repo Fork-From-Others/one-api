@@ -7,6 +7,7 @@ const Product = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activePage, setActivePage] = useState(1);
+    const [intervalId, setIntervalId] = useState(null);
 
     const [modalOpen, setModalOpen] = useState(false);
     const [qrcodeUrl, setQrcodeUrl] = useState(null);
@@ -89,6 +90,7 @@ const Product = () => {
                                                                 clearInterval(intervalId);
                                                             }
                                                         }, 5000);
+                                                        setIntervalId(intervalId);
                                                     } else {
                                                         showError(message);
                                                     }
@@ -114,7 +116,10 @@ const Product = () => {
                 </Table>
             </Segment>
 
-            <Modal size={'mini'} open={modalOpen} onClose={() => setModalOpen(false)}>
+            <Modal size={'mini'} open={modalOpen} onClose={() => {
+                setModalOpen(false);
+                clearInterval(intervalId);
+            }}>
                 <Modal.Header>请扫描以下二维码进行支付</Modal.Header>
                 <Modal.Content>
                     <Image size='medium' src={qrcodeUrl} wrapped alt="支付二维码"/>
