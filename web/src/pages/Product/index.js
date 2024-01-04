@@ -5,9 +5,9 @@ import {PRODUCT_PER_PAGE} from "../../constants";
 
 const Product = () => {
     const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading,setLoading] = useState(true);
     const [activePage, setActivePage] = useState(1);
-    const [intervalId, setIntervalId] = useState(null);
+    const [intervalId, setIntervalId] = useState(0);
 
     const [modalOpen, setModalOpen] = useState(false);
     const [qrcodeUrl, setQrcodeUrl] = useState(null);
@@ -67,7 +67,7 @@ const Product = () => {
                                                 <p>价格: {item.price}￥</p>
                                                 <p></p>
                                             </Card.Description>
-                                            <Button size={"mini"} positive fluid onClick={
+                                            <Button size={"mini"} loading={loading} positive fluid onClick={
                                                 async () => {
                                                     let res = await API.post("/api/alipay/getPaymentQrcode", {
                                                         product_id: item.id,
@@ -75,7 +75,7 @@ const Product = () => {
                                                         money: item.price
                                                     });
                                                     const {success, message, data} = res.data;
-                                                    const {product_id, out_trade_no, qr_code_url, qr_code_base64} = data;
+                                                    const {product_id, out_trade_no, qr_code_base64} = data;
                                                     setProductId(product_id);
                                                     if (success) {
                                                         setQrcodeUrl(qr_code_base64);
@@ -83,7 +83,7 @@ const Product = () => {
                                                         // 开始定时查询订单状态
                                                         const intervalId = setInterval(async () => {
                                                             const res = await API.get(`/api/alipay/status?product_id=${product_id}&out_trade_no=${out_trade_no}`);
-                                                            const {success, message, data} = res.data;
+                                                            const {data} = res.data;
                                                             if (data.status === '支付成功') {
                                                                 setOrderStatus('支付成功');
                                                                 setProductKey(data.key);
